@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/create', (req, res, next) => {
     const data = req.body;
-    const { schemaCreateInvoice: schema } = require('../lib/ajvSchemas');
+    const { schemaCreateInvoice: schema } = require('../schemas/validations/invoice');
     const validate = ajv.compile(schema);
     const valid = validate(data);
 

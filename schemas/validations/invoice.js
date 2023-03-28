@@ -1,19 +1,3 @@
-const schemaCreateUser = {
-    type: "object",
-    properties: {
-        id_user: { type: "string" },
-        name: { type: "string" },
-        surname: { type: "string" },
-        email: { type: "string" },
-        photo: { type: "string" },
-        id_role: { type: "integer" },
-    },
-    additionalProperties: false,
-    required: ["id_user", "name", "surname", "email", "photo", "id_role"]
-};
-
-
-
 const schemaCreateInvoice = {
     type: "object",
     properties: {
@@ -29,5 +13,4 @@ const schemaCreateInvoice = {
     required: ["date", "amount", "title", "typology", "description", "id_user", "id_customer"]
 };
 
-exports.schemaCreateUser = schemaCreateUser;
 exports.schemaCreateInvoice = schemaCreateInvoice;

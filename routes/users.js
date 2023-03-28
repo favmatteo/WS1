@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/create', (req, res, next) => {
     const data = req.body;
-    const { schemaCreateUser: schema } = require('../lib/ajvSchemas');
+    const { schemaCreateUser: schema } = require('../schemas/validations/user');
     const validate = ajv.compile(schema)
     const valid = validate(data)
 
