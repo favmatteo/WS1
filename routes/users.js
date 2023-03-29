@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const db = require('../lib/DBConnection');
+const user = require('../databases/DBuser');
 const { ajv } = require('../lib/app');
 
-router.get('/', (req, res, next) => {
-    res.send({ name: "Matteo" });
-    next();
-})
-
+/**
+ * Router for create a new user
+ * @param {string} id_user - The id of the user
+ * @param {string} name - The name of the user
+ * @param {string} surname - The surname of the user
+ * @param {string} email - The email of the user
+ * @param {string} photo - The photo of the user
+ * @param {integer} id_role - The id of the role of the user
+ * @returns {object} - The status of user created
+ */
 router.post('/create', (req, res, next) => {
     const data = req.body;
     const { schemaCreateUser: schema } = require('../schemas/validations/user');
@@ -16,7 +21,7 @@ router.post('/create', (req, res, next) => {
     const valid = validate(data)
 
     if (valid) {
-        db.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role)
+        user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role)
             .then((result) => {
                 res.send(result)
             })

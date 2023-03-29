@@ -10,11 +10,9 @@ app.listen(port, () => {
     db.isDBConnected();
 
     // Routes
-    const health = require('./routes/health');
     const invoice = require('./routes/invoices');
     const user = require('./routes/users');
 
-    app.use("/health", health);
     app.use("/invoice", invoice)
     app.use("/user", user);
 })
