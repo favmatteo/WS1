@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: lib/middleware/database.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,35 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: lib/middleware/database.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { sequelize } = require('../database');
 
+/**
+ * @description This function is used to connect to the database.
+ */
+function useDatabase() {
+    sequelize.authenticate().then(() => {
+        console.log("Connected!");
+    }).catch((error) => {
+        console.log(`Error while connecting with database! ${error.message}`);
+        process.exit();
+    });
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = {
+    useDatabase: useDatabase,
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

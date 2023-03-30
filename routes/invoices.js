@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const invoice = require('../databases/DBinvoice');
-const { ajv } = require('../lib/app');
+const { ajv } = require('../lib/middleware/ajv');
 
 const { schemaCreateInvoice: schema } = require('../schemas/validations/invoice');
 const validate = ajv.compile(schema);
@@ -25,12 +25,15 @@ router.post('/create', (req, res, next) => {
     if (valid) {
         invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer)
             .then((result) => {
+                res.status(result.status)
                 res.send(result);
             })
             .catch((error) => {
+                res.status(500);
                 res.send({ status: "Unknown error", message: error.message })
             });
     } else {
+        res.status(400);
         res.send({ status: "error", errors: validate.errors[0].message })
     }
 })
@@ -42,9 +45,11 @@ router.post('/create', (req, res, next) => {
 router.get('/all', (req, res, next) => {
     invoice.getInvoice()
         .then((result) => {
+            res.status(result.status)
             res.send(result);
         })
         .catch((error) => {
+            res.status(500);
             res.send({ status: "Unknown error", message: error.message })
         });
 });
@@ -57,9 +62,11 @@ router.get('/all', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
     invoice.getInvoice(req.params.id)
         .then((result) => {
+            res.status(result.status)
             res.send(result);
         })
         .catch((error) => {
+            res.status(500);
             res.send({ status: "Unknown error", message: error.message })
         });
 });

@@ -20,9 +20,9 @@ async function createUser(id_user, name, surname, email, photo, id_role) {
             photo: photo,
             id_role: id_role
         })
-        return { status: "ok", message: "User created!" }
+        return { status: 201, message: "User created!" }
     } catch (error) {
-        return { status: "error", message: "Error while creating user!", why: error.message }
+        return { status: 404, message: "Error while creating user!", why: error.message }
     }
 }
 

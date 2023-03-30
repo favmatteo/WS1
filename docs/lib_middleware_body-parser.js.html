@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: lib/middleware/body-parser.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,34 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: lib/middleware/body-parser.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const bodyParser = require('body-parser');
 
+/**
+ * Function to use the body-parser middleware
+ * @param {object} app 
+ */
+function useBodyParser(app) {
+    app.use(bodyParser.json());
+    app.use((req, res, next) => {
+        res.setHeader('Content-Type', 'application/json');
+        next();
+    });
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = {
+    useBodyParser: useBodyParser,
+};</code></pre>
+        </article>
+    </section>
 
 
 

@@ -22,9 +22,9 @@ async function createInvoice(date, amount, title, typology, description, id_user
             id_user: id_user,
             id_customer: id_customer
         })
-        return { status: "ok", message: "Invoice created!" }
+        return { status: 201, message: "Invoice created!" }
     } catch (error) {
-        return { status: "error", message: "Error while creating invoice!", why: error.message }
+        return { status: 404, message: "Error while creating invoice!", why: error.message }
     }
 }
 
@@ -40,12 +40,11 @@ async function getInvoice(id = 'all') {
             where: id !== 'all' ? { id_invoice: id } : null
         });
         if (result.length === 0) {
-            return { status: "error", message: "No invoice found!" }
+            return { status: 404, message: "No invoice found!" }
         }
-        return { status: "ok", message: id === 'all' ? 'All Invoice' : `Invoice with id ${id}`, result: result }
-
+        return { status: 200, message: id === 'all' ? 'All Invoice' : `Invoice with id ${id}`, result: result }
     } catch (error) {
-        return { status: "error", message: "Error while getting all invoice!", why: error.message }
+        return { status: 404, message: "Error while getting all invoice!", why: error.message }
     }
 }
 

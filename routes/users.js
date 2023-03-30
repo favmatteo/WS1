@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const user = require('../databases/DBuser');
-const { ajv } = require('../lib/app');
+const { ajv } = require('../lib/middleware/ajv');
 
 /**
  * Router for create a new user
@@ -23,13 +23,15 @@ router.post('/create', (req, res, next) => {
     if (valid) {
         user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role)
             .then((result) => {
+                res.status(result.status);
                 res.send(result)
             })
             .catch((error) => {
+                res.status(500);
                 res.send({ status: "Unknown error", message: error.message })
-
             });
     } else {
+        res.status(400);
         res.send({ status: valid, errors: validate.errors[0].message })
     }
 })
