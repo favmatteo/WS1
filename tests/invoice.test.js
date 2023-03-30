@@ -1,9 +1,4 @@
-require("dotenv").config();
-
-const { app } = require('../lib/app');
-const { sequelize } = require('../lib/database');
-const request = require('supertest')
-//const index = require('../index')
+const { app, sequelize, request } = require('./config');
 
 describe("Invoices API", () => {
 
