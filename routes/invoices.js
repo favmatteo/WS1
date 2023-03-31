@@ -3,6 +3,7 @@ const router = express.Router();
 
 const invoice = require('../databases/DBinvoice');
 const { ajv } = require('../lib/middleware/ajv');
+const { authenticate, validateSchema } = require('../lib/utility');
 
 const { schemaCreateInvoice: schema } = require('../schemas/validations/invoice');
 const validate = ajv.compile(schema);
@@ -18,23 +19,18 @@ const validate = ajv.compile(schema);
  * @param {integer} id_customer - The id of the customer of the invoice
  * @returns {object} - The status of invoice created
  */
-router.post('/create', (req, res, next) => {
+router.post('/create', async (req, res, next) => {
     const data = req.body;
-    const valid = validate(data);
+    try {
+        validateSchema(validate, data)
+        await authenticate(req.headers.authorization)
 
-    if (valid) {
-        invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer)
-            .then((result) => {
-                res.status(result.status)
-                res.send(result);
-            })
-            .catch((error) => {
-                res.status(500);
-                res.send({ status: "Unknown error", message: error.message })
-            });
-    } else {
-        res.status(400);
-        res.send({ status: "error", errors: validate.errors[0].message })
+        const newInvoice = await invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer);
+        res.status(newInvoice.status);
+        res.send(newInvoice);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
     }
 })
 
@@ -42,16 +38,17 @@ router.post('/create', (req, res, next) => {
  * Router for get all invoices
  * @returns {object} - All invoices
  */
-router.get('/all', (req, res, next) => {
-    invoice.getInvoice()
-        .then((result) => {
-            res.status(result.status)
-            res.send(result);
-        })
-        .catch((error) => {
-            res.status(500);
-            res.send({ status: "Unknown error", message: error.message })
-        });
+router.get('/all', async (req, res, next) => {
+    try {
+        await authenticate(req.headers.authorization)
+
+        const allInvoices = await invoice.getInvoice();
+        res.status(allInvoices.status);
+        res.send(allInvoices);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
 });
 
 /**
@@ -59,16 +56,17 @@ router.get('/all', (req, res, next) => {
  * @param {integer} id - The id of the invoice
  * @returns {object} - The invoice
  */
-router.get('/:id', (req, res, next) => {
-    invoice.getInvoice(req.params.id)
-        .then((result) => {
-            res.status(result.status)
-            res.send(result);
-        })
-        .catch((error) => {
-            res.status(500);
-            res.send({ status: "Unknown error", message: error.message })
-        });
+router.get('/:id', async (req, res, next) => {
+    try {
+        await authenticate(req.headers.authorization)
+
+        const specificInvoice = await invoice.getInvoice(req.params.id);
+        res.status(specificInvoice.status);
+        res.send(specificInvoice);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
 });
 
 module.exports = router;

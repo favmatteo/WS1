@@ -4,6 +4,13 @@ const router = express.Router();
 const user = require('../databases/DBuser');
 const { ajv } = require('../lib/middleware/ajv');
 
+const { authenticate, validateSchema } = require('../lib/utility');
+
+
+const { schemaCreateUser: schema } = require('../schemas/validations/user');
+const validate = ajv.compile(schema)
+
+
 /**
  * Router for create a new user
  * @param {string} id_user - The id of the user
@@ -14,25 +21,18 @@ const { ajv } = require('../lib/middleware/ajv');
  * @param {integer} id_role - The id of the role of the user
  * @returns {object} - The status of user created
  */
-router.post('/create', (req, res, next) => {
+router.post('/create', async (req, res, next) => {
     const data = req.body;
-    const { schemaCreateUser: schema } = require('../schemas/validations/user');
-    const validate = ajv.compile(schema)
-    const valid = validate(data)
+    try {
+        validateSchema(validate, data)
+        await authenticate(req.headers.authorization)
 
-    if (valid) {
-        user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role)
-            .then((result) => {
-                res.status(result.status);
-                res.send(result)
-            })
-            .catch((error) => {
-                res.status(500);
-                res.send({ status: "Unknown error", message: error.message })
-            });
-    } else {
-        res.status(400);
-        res.send({ status: valid, errors: validate.errors[0].message })
+        const newUser = await user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role);
+        res.status(newUser.status);
+        res.send(newUser);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
     }
 })
 
