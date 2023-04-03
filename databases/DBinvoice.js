@@ -44,7 +44,7 @@ async function getInvoice(id = 'all') {
         }
         return { status: 200, message: id === 'all' ? 'All Invoice' : `Invoice with id ${id}`, result: result }
     } catch (error) {
-        return { status: 404, message: "Error while getting all invoice!", why: error.message }
+        return { status: 404, message: "Error while getting invoice(s)!", why: error.message }
     }
 }
 

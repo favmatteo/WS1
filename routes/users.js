@@ -36,4 +36,33 @@ router.post('/create', async (req, res, next) => {
     }
 })
 
+
+router.get('/all', async (req, res, next) => {
+    try {
+        await authenticate(req.headers.authorization);
+
+        const specificUser = await user.getUser();
+        res.status(specificUser.status);
+        res.send(specificUser);
+
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
+});
+
+router.get('/:id', async (req, res, next) => {
+    try {
+        await authenticate(req.headers.authorization);
+
+        const specificUser = await user.getUser(req.params.id);
+        res.status(specificUser.status);
+        res.send(specificUser);
+
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
+});
+
 module.exports = router;

@@ -26,6 +26,22 @@ async function createUser(id_user, name, surname, email, photo, id_role) {
     }
 }
 
+async function getUser(id = 'all') {
+    try {
+        const result = await User.findAll({
+            attributes: ['id_user', 'name', 'surname', 'email', 'photo', 'id_role'],
+            where: id !== 'all' ? { id_user: id } : null
+        })
+        if (result.length === 0) {
+            return { status: 404, message: "No user found!" }
+        }
+        return { status: 200, message: id === 'all' ? 'All User' : `User with id ${id}`, result: result }
+    } catch (error) {
+        return { status: 404, message: "Error while getting user(s)!", why: error.message }
+    }
+}
+
 module.exports = {
     createUser: createUser,
+    getUser: getUser,
 }
