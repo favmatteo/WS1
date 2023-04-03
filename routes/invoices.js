@@ -69,4 +69,17 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+router.delete('/delete/:id', async (req, res, next) => {
+    try {
+        await authenticate(req.headers.authorization)
+
+        const result = await invoice.deleteInvoice(req.params.id);
+        res.status(result.status);
+        res.send(result);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
+});
+
 module.exports = router;

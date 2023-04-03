@@ -48,7 +48,19 @@ async function getInvoice(id = 'all') {
     }
 }
 
+async function deleteInvoice(id) {
+    try {
+        const result = await Invoice.destroy({
+            where: { id_invoice: id }
+        })
+        return { status: 200, message: "Invoice deleted!" }
+    } catch (error) {
+        return { status: 404, message: "Error while deleting invoice!", why: error.message }
+    }
+}
+
 module.exports = {
     createInvoice: createInvoice,
     getInvoice: getInvoice,
+    deleteInvoice: deleteInvoice,
 }

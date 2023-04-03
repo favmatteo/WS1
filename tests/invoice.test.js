@@ -61,5 +61,15 @@ describe("Invoices API", () => {
                 .expect(404);
         });
     });
+
+    describe("DELETE /invoice/37694", () => {
+        it("Delete the invoice n°37694", async () => {
+            const res = await request(app)
+                .delete("/invoice/37694")
+                .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
+                .expect('Content-Type', /json/)
+                .expect(200);
+        });
+    });
 })
 
