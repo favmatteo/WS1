@@ -62,14 +62,26 @@ describe("Invoices API", () => {
         });
     });
 
-    describe("DELETE /invoice/37694", () => {
-        it("Delete the invoice n°37694", async () => {
+    describe("DELETE /invoice/10", () => {
+        it("Delete the invoice n°10", async () => {
+            await request(app)
+                .post("/invoice/create")
+                .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
+                .send({
+                    "id_invoice": 10,
+                    "date": "2023-01-01",
+                    "amount": 150,
+                    "title": "Test from Node",
+                    "typology": "Node Test",
+                    "description": "Test 1",
+                    "id_user": process.env.TEST_TOKEN_USER_UID,
+                    "id_customer": 1
+                })
             const res = await request(app)
-                .delete("/invoice/37694")
+                .delete("/invoice/delete/10")
                 .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
                 .expect('Content-Type', /json/)
                 .expect(200);
         });
     });
 })
-

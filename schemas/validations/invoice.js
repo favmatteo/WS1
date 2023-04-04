@@ -1,6 +1,7 @@
 const schemaCreateInvoice = {
     type: "object",
     properties: {
+        id_invoice: { type: "integer" },
         date: { type: "string" },
         amount: { type: "integer" },
         title: { type: "string" },

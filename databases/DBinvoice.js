@@ -11,17 +11,30 @@ const { Invoice } = require('../schemas/invoice');
  * @param {integer} id_customer  - The id of the customer of the invoice
  * @returns {object} - The status of invoice created
  */
-async function createInvoice(date, amount, title, typology, description, id_user, id_customer) {
+async function createInvoice(date, amount, title, typology, description, id_user, id_customer, id = null) {
     try {
-        await Invoice.create({
-            date: date,
-            amount: amount,
-            title: title,
-            typology: typology,
-            description: description,
-            id_user: id_user,
-            id_customer: id_customer
-        })
+        if (id) {
+            await Invoice.create({
+                id_invoice: id,
+                date: date,
+                amount: amount,
+                title: title,
+                typology: typology,
+                description: description,
+                id_user: id_user,
+                id_customer: id_customer
+            })
+        } else {
+            await Invoice.create({
+                date: date,
+                amount: amount,
+                title: title,
+                typology: typology,
+                description: description,
+                id_user: id_user,
+                id_customer: id_customer
+            })
+        }
         return { status: 201, message: "Invoice created!" }
     } catch (error) {
         return { status: 404, message: "Error while creating invoice!", why: error.message }

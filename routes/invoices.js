@@ -25,7 +25,7 @@ router.post('/create', async (req, res, next) => {
         validateSchema(validate, data)
         await authenticate(req.headers.authorization)
 
-        const newInvoice = await invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer);
+        const newInvoice = await invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer, data.id_invoice);
         res.status(newInvoice.status);
         res.send(newInvoice);
     } catch (error) {
