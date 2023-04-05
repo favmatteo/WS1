@@ -1,3 +1,4 @@
+const invoice = require('../schemas/invoice');
 const { Invoice } = require('../schemas/invoice');
 
 /**
@@ -61,6 +62,11 @@ async function getInvoice(id = 'all') {
     }
 }
 
+/**
+ * Function to delete a specific invoice from the database
+ * @param {*} id 
+ * @returns 
+ */
 async function deleteInvoice(id) {
     try {
         const result = await Invoice.destroy({
@@ -72,8 +78,43 @@ async function deleteInvoice(id) {
     }
 }
 
+async function updateInvoice(id, datas) {
+    if (Object.keys(datas).length == 0) {
+        return { status: 405, message: "Error while updating invoice!", why: "No information was entered to modify the invoice" }
+    }
+    const id_invoice = id;
+    let invoice;
+    try {
+        invoice = await getInvoice();
+    } catch (error) {
+        return { status: 404, message: "No invoice found!" }
+    }
+    const date = datas.date || invoice.result[0].date;
+    const amount = datas.amount || invoice.result[0].amount;
+    const title = datas.title || invoice.result[0].title;
+    const typology = datas.typology || invoice.result[0].typology;
+    const description = datas.description || invoice.result[0].description;
+    try {
+        await Invoice.update({
+            date: date,
+            amount: amount,
+            title: title,
+            typology: typology,
+            description: description,
+        },
+            {
+                where: { id_invoice: id_invoice },
+            }
+        )
+        return { status: 200, message: "Updated" }
+    } catch (error) {
+        return { status: 404, message: "Error while updating invoice!", why: error.message }
+    }
+}
+
 module.exports = {
     createInvoice: createInvoice,
     getInvoice: getInvoice,
     deleteInvoice: deleteInvoice,
+    updateInvoice: updateInvoice,
 }

@@ -14,4 +14,19 @@ const schemaCreateInvoice = {
     required: ["date", "amount", "title", "typology", "description", "id_user", "id_customer"]
 };
 
-exports.schemaCreateInvoice = schemaCreateInvoice;
+const schemaUpdateInvoice = {
+    type: "object",
+    properties: {
+        date: { type: "string" },
+        amount: { type: "integer" },
+        title: { type: "string" },
+        typology: { type: "string" },
+        description: { type: "string" },
+    },
+    additionalProperties: false,
+}
+
+module.exports = {
+    schemaCreateInvoice: schemaCreateInvoice,
+    schemaUpdateInvoice: schemaUpdateInvoice,
+}

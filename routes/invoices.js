@@ -5,8 +5,7 @@ const invoice = require('../databases/DBinvoice');
 const { ajv } = require('../lib/middleware/ajv');
 const { authenticate, validateSchema } = require('../lib/utility');
 
-const { schemaCreateInvoice: schema } = require('../schemas/validations/invoice');
-const validate = ajv.compile(schema);
+const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validations/invoice');
 
 /**
  * Router for create a new invoice
@@ -21,6 +20,8 @@ const validate = ajv.compile(schema);
  */
 router.post('/create', async (req, res, next) => {
     const data = req.body;
+    const validate = ajv.compile(schemaCreateInvoice);
+
     try {
         validateSchema(validate, data)
         await authenticate(req.headers.authorization)
@@ -69,11 +70,32 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+/**
+ * Router for delete a specific invoice
+ * @param {integer} id - The id of the invoice
+ * @returns {object} - The status of invoice deleted
+ */
 router.delete('/delete/:id', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization)
 
         const result = await invoice.deleteInvoice(req.params.id);
+        res.status(result.status);
+        res.send(result);
+    } catch (error) {
+        res.status(error.status ? error.status : 500);
+        res.send(error);
+    }
+});
+
+router.put('/update/:id', async (req, res, next) => {
+    const data = req.body;
+    const validate = ajv.compile(schemaUpdateInvoice);
+    try {
+        validateSchema(validate, data)
+        await authenticate(req.headers.authorization)
+
+        const result = await invoice.updateInvoice(req.params.id, data);
         res.status(result.status);
         res.send(result);
     } catch (error) {
