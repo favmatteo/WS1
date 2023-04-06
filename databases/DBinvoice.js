@@ -3,39 +3,27 @@ const { Invoice } = require('../schemas/invoice');
 
 /**
  * Function to create an invoice and save it in the database
- * @param {object} date - The date of the invoice
+ * @param {string} date - The date of the invoice
  * @param {integer} amount - The amount of the invoice
  * @param {string} title - The title of the invoice
  * @param {string} typology - The typology of the invoice
  * @param {string} description - The description of the invoice
  * @param {string} id_user - The id of the user of the invoice
  * @param {integer} id_customer  - The id of the customer of the invoice
- * @returns {object} - The status of invoice created
+ * @returns {JSON} - The status of invoice created
  */
 async function createInvoice(date, amount, title, typology, description, id_user, id_customer, id = null) {
     try {
-        if (id) {
-            await Invoice.create({
-                id_invoice: id,
-                date: date,
-                amount: amount,
-                title: title,
-                typology: typology,
-                description: description,
-                id_user: id_user,
-                id_customer: id_customer
-            })
-        } else {
-            await Invoice.create({
-                date: date,
-                amount: amount,
-                title: title,
-                typology: typology,
-                description: description,
-                id_user: id_user,
-                id_customer: id_customer
-            })
-        }
+        await Invoice.create({
+            id_invoice: id ? id : null,
+            date: date,
+            amount: amount,
+            title: title,
+            typology: typology,
+            description: description,
+            id_user: id_user,
+            id_customer: id_customer
+        })
         return { status: 201, message: "Invoice created!" }
     } catch (error) {
         return { status: 404, message: "Error while creating invoice!", why: error.message }
@@ -45,7 +33,7 @@ async function createInvoice(date, amount, title, typology, description, id_user
 /**
  * Function to get all invoices or a specific invoice from the database
  * @param {integer} id - The id of the invoice 
- * @returns {object} - All invoices or a specific invoice
+ * @returns {JSON} - All invoices or a specific invoice
  */
 async function getInvoice(id = 'all') {
     try {
@@ -64,8 +52,8 @@ async function getInvoice(id = 'all') {
 
 /**
  * Function to delete a specific invoice from the database
- * @param {*} id 
- * @returns 
+ * @param {integer} id - The id of the invoice to delete
+ * @returns {JSON} - Status of the invoice deleted
  */
 async function deleteInvoice(id) {
     try {
@@ -78,35 +66,36 @@ async function deleteInvoice(id) {
     }
 }
 
+/**
+ * Function to update a specific invoice from the database
+ * @param {integer} id - The id of the invoice to update
+ * @param {JSON} datas - The datas to update
+ * @returns {JSON} - Status of the invoice updated
+ */
 async function updateInvoice(id, datas) {
-    if (Object.keys(datas).length == 0) {
+    if (Object.keys(datas).length === 0) {
         return { status: 405, message: "Error while updating invoice!", why: "No information was entered to modify the invoice" }
     }
     const id_invoice = id;
     let invoice;
     try {
-        invoice = await getInvoice();
+        invoice = await getInvoice(id);
     } catch (error) {
         return { status: 404, message: "No invoice found!" }
     }
-    const date = datas.date || invoice.result[0].date;
-    const amount = datas.amount || invoice.result[0].amount;
-    const title = datas.title || invoice.result[0].title;
-    const typology = datas.typology || invoice.result[0].typology;
-    const description = datas.description || invoice.result[0].description;
     try {
         await Invoice.update({
-            date: date,
-            amount: amount,
-            title: title,
-            typology: typology,
-            description: description,
+            date: datas.date,
+            amount: datas.amount,
+            title: datas.title,
+            typology: datas.typology,
+            description: datas.description,
         },
             {
                 where: { id_invoice: id_invoice },
             }
         )
-        return { status: 200, message: "Updated" }
+        return { status: 200, message: "Invoice updated!" }
     } catch (error) {
         return { status: 404, message: "Error while updating invoice!", why: error.message }
     }

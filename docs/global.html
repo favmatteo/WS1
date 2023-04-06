@@ -104,7 +104,7 @@
     
 
     
-    <h4 class="name" id="createInvoice"><span class="type-signature">(async) </span>createInvoice<span class="signature">(date, amount, title, typology, description, id_user, id_customer)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="createInvoice"><span class="type-signature">(async) </span>createInvoice<span class="signature">(date, amount, title, typology, description, id_user, id_customer)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
     
 
     
@@ -154,7 +154,7 @@
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
             
@@ -343,7 +343,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line14">line 14</a>
+        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -385,7 +385,7 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
+<span class="param-type">JSON</span>
 
 
     </dd>
@@ -403,7 +403,7 @@
     
 
     
-    <h4 class="name" id="createUser"><span class="type-signature">(async) </span>createUser<span class="signature">(id_user, name, surname, email, photo, id_role)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="createUser"><span class="type-signature">(async) </span>createUser<span class="signature">(id_user, name, surname, email, photo, id_role)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
     
 
     
@@ -661,7 +661,7 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
+<span class="param-type">JSON</span>
 
 
     </dd>
@@ -679,7 +679,168 @@
     
 
     
-    <h4 class="name" id="getInvoice"><span class="type-signature">(async) </span>getInvoice<span class="signature">(id)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="deleteInvoice"><span class="type-signature">(async) </span>deleteInvoice<span class="signature">(id)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Function to delete a specific invoice from the database</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of the invoice to delete</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Status of the invoice deleted</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">JSON</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getInvoice"><span class="type-signature">(async) </span>getInvoice<span class="signature">(id)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
     
 
     
@@ -788,7 +949,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line36">line 36</a>
+        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -830,7 +991,360 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
+<span class="param-type">JSON</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getUser"><span class="type-signature">(async) </span>getUser<span class="signature">(id)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Function to get all users or a specific user from the database</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    all
+                
+                </td>
+            
+
+            <td class="description last"><p>The id of the user</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="databases_DBuser.js.html">databases/DBuser.js</a>, <a href="databases_DBuser.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>All users or a specific user</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">JSON</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateInvoice"><span class="type-signature">(async) </span>updateInvoice<span class="signature">(id, datas)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Function to update a specific invoice from the database</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">integer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of the invoice to update</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>datas</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">JSON</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The datas to update</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="databases_DBinvoice.js.html">databases/DBinvoice.js</a>, <a href="databases_DBinvoice.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Status of the invoice updated</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">JSON</span>
 
 
     </dd>
@@ -1083,13 +1597,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createInvoice">createInvoice</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#getInvoice">getInvoice</a></li><li><a href="global.html#useBodyParser">useBodyParser</a></li><li><a href="global.html#useDatabase">useDatabase</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createInvoice">createInvoice</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteInvoice">deleteInvoice</a></li><li><a href="global.html#getInvoice">getInvoice</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#updateInvoice">updateInvoice</a></li><li><a href="global.html#useBodyParser">useBodyParser</a></li><li><a href="global.html#useDatabase">useDatabase</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Mar 30 2023 19:55:37 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 05 2023 22:38:15 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

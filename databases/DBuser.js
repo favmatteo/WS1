@@ -8,7 +8,7 @@ const { User } = require('../schemas/user');
  * @param {string} email - The email of the user
  * @param {string} photo  - The photo of the user
  * @param {integer} id_role - The id of the role of the user
- * @returns {object} - The status of user created
+ * @returns {JSON} - The status of user created
  */
 async function createUser(id_user, name, surname, email, photo, id_role) {
     try {
@@ -26,6 +26,11 @@ async function createUser(id_user, name, surname, email, photo, id_role) {
     }
 }
 
+/**
+ * Function to get all users or a specific user from the database
+ * @param {string} id - The id of the user 
+ * @returns {JSON} - All users or a specific user
+ */
 async function getUser(id = 'all') {
     try {
         const result = await User.findAll({

@@ -9,14 +9,14 @@ const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validat
 
 /**
  * Router for create a new invoice
- * @param {date} date - The date of the invoice
+ * @param {string} date - The date of the invoice
  * @param {integer} amount - The amount of the invoice
  * @param {string} title - The title of the invoice
  * @param {string} typology - The typology of the invoice
  * @param {string} description - The description of the invoice
  * @param {string} id_user - The id of the user of the invoice
  * @param {integer} id_customer - The id of the customer of the invoice
- * @returns {object} - The status of invoice created
+ * @returns {JSON} - The status of invoice created
  */
 router.post('/create', async (req, res, next) => {
     const data = req.body;
@@ -37,7 +37,7 @@ router.post('/create', async (req, res, next) => {
 
 /**
  * Router for get all invoices
- * @returns {object} - All invoices
+ * @returns {JSON} - All invoices
  */
 router.get('/all', async (req, res, next) => {
     try {
@@ -55,7 +55,7 @@ router.get('/all', async (req, res, next) => {
 /**
  * Router for get a specific invoice
  * @param {integer} id - The id of the invoice
- * @returns {object} - The invoice
+ * @returns {JSON} - The invoice
  */
 router.get('/:id', async (req, res, next) => {
     try {
@@ -73,7 +73,7 @@ router.get('/:id', async (req, res, next) => {
 /**
  * Router for delete a specific invoice
  * @param {integer} id - The id of the invoice
- * @returns {object} - The status of invoice deleted
+ * @returns {JSON} - The status of invoice deleted
  */
 router.delete('/delete/:id', async (req, res, next) => {
     try {
@@ -88,6 +88,11 @@ router.delete('/delete/:id', async (req, res, next) => {
     }
 });
 
+/**
+ * Router for update a specific invoice
+  * @param {integer} id - The id of the invoice
+  * @returns {JSON} - The status of invoice updated
+ */
 router.put('/update/:id', async (req, res, next) => {
     const data = req.body;
     const validate = ajv.compile(schemaUpdateInvoice);

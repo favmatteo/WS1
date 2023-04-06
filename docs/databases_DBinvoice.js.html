@@ -26,30 +26,44 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const { Invoice } = require('../schemas/invoice');
+            <pre class="prettyprint source linenums"><code>const invoice = require('../schemas/invoice');
+const { Invoice } = require('../schemas/invoice');
 
 /**
  * Function to create an invoice and save it in the database
- * @param {object} date - The date of the invoice
+ * @param {string} date - The date of the invoice
  * @param {integer} amount - The amount of the invoice
  * @param {string} title - The title of the invoice
  * @param {string} typology - The typology of the invoice
  * @param {string} description - The description of the invoice
  * @param {string} id_user - The id of the user of the invoice
  * @param {integer} id_customer  - The id of the customer of the invoice
- * @returns {object} - The status of invoice created
+ * @returns {JSON} - The status of invoice created
  */
-async function createInvoice(date, amount, title, typology, description, id_user, id_customer) {
+async function createInvoice(date, amount, title, typology, description, id_user, id_customer, id = null) {
     try {
-        await Invoice.create({
-            date: date,
-            amount: amount,
-            title: title,
-            typology: typology,
-            description: description,
-            id_user: id_user,
-            id_customer: id_customer
-        })
+        if (id) {
+            await Invoice.create({
+                id_invoice: id,
+                date: date,
+                amount: amount,
+                title: title,
+                typology: typology,
+                description: description,
+                id_user: id_user,
+                id_customer: id_customer
+            })
+        } else {
+            await Invoice.create({
+                date: date,
+                amount: amount,
+                title: title,
+                typology: typology,
+                description: description,
+                id_user: id_user,
+                id_customer: id_customer
+            })
+        }
         return { status: 201, message: "Invoice created!" }
     } catch (error) {
         return { status: 404, message: "Error while creating invoice!", why: error.message }
@@ -59,7 +73,7 @@ async function createInvoice(date, amount, title, typology, description, id_user
 /**
  * Function to get all invoices or a specific invoice from the database
  * @param {integer} id - The id of the invoice 
- * @returns {object} - All invoices or a specific invoice
+ * @returns {JSON} - All invoices or a specific invoice
  */
 async function getInvoice(id = 'all') {
     try {
@@ -72,13 +86,71 @@ async function getInvoice(id = 'all') {
         }
         return { status: 200, message: id === 'all' ? 'All Invoice' : `Invoice with id ${id}`, result: result }
     } catch (error) {
-        return { status: 404, message: "Error while getting all invoice!", why: error.message }
+        return { status: 404, message: "Error while getting invoice(s)!", why: error.message }
+    }
+}
+
+/**
+ * Function to delete a specific invoice from the database
+ * @param {integer} id - The id of the invoice to delete
+ * @returns {JSON} - Status of the invoice deleted
+ */
+async function deleteInvoice(id) {
+    try {
+        const result = await Invoice.destroy({
+            where: { id_invoice: id }
+        })
+        return { status: 200, message: "Invoice deleted!" }
+    } catch (error) {
+        return { status: 404, message: "Error while deleting invoice!", why: error.message }
+    }
+}
+
+/**
+ * Function to update a specific invoice from the database
+ * @param {integer} id - The id of the invoice to update
+ * @param {JSON} datas - The datas to update
+ * @returns {JSON} - Status of the invoice updated
+ */
+async function updateInvoice(id, datas) {
+    if (Object.keys(datas).length == 0) {
+        return { status: 405, message: "Error while updating invoice!", why: "No information was entered to modify the invoice" }
+    }
+    const id_invoice = id;
+    let invoice;
+    try {
+        invoice = await getInvoice();
+    } catch (error) {
+        return { status: 404, message: "No invoice found!" }
+    }
+    const date = datas.date || invoice.result[0].date;
+    const amount = datas.amount || invoice.result[0].amount;
+    const title = datas.title || invoice.result[0].title;
+    const typology = datas.typology || invoice.result[0].typology;
+    const description = datas.description || invoice.result[0].description;
+    try {
+        await Invoice.update({
+            date: date,
+            amount: amount,
+            title: title,
+            typology: typology,
+            description: description,
+        },
+            {
+                where: { id_invoice: id_invoice },
+            }
+        )
+        return { status: 200, message: "Updated" }
+    } catch (error) {
+        return { status: 404, message: "Error while updating invoice!", why: error.message }
     }
 }
 
 module.exports = {
     createInvoice: createInvoice,
     getInvoice: getInvoice,
+    deleteInvoice: deleteInvoice,
+    updateInvoice: updateInvoice,
 }
 </code></pre>
         </article>
@@ -90,13 +162,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createInvoice">createInvoice</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#getInvoice">getInvoice</a></li><li><a href="global.html#useBodyParser">useBodyParser</a></li><li><a href="global.html#useDatabase">useDatabase</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createInvoice">createInvoice</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteInvoice">deleteInvoice</a></li><li><a href="global.html#getInvoice">getInvoice</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#updateInvoice">updateInvoice</a></li><li><a href="global.html#useBodyParser">useBodyParser</a></li><li><a href="global.html#useDatabase">useDatabase</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Mar 30 2023 19:55:37 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 05 2023 22:38:15 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

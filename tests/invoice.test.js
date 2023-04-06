@@ -81,7 +81,37 @@ describe("Invoices API", () => {
                 .delete("/invoice/delete/10")
                 .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
                 .expect('Content-Type', /json/)
-                .expect(200);
+                .expect(200, { status: 200, message: "Invoice deleted!" });
         });
     });
+
+    describe("UPDATE /invoice/update/10", () => {
+        it("Update the invoice n°10", async () => {
+            await request(app)
+                .post("/invoice/create")
+                .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
+                .send({
+                    "id_invoice": 10,
+                    "date": "2023-01-01",
+                    "amount": 150,
+                    "title": "Test from Node",
+                    "typology": "Node Test",
+                    "description": "Test 1",
+                    "id_user": process.env.TEST_TOKEN_USER_UID,
+                    "id_customer": 1
+                })
+            const res = await request(app)
+                .put("/invoice/update/10")
+                .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
+                .send({
+                    "date": new Date().toISOString().split('T')[0],
+                    "amount": 230,
+                    "title": "Prova di aggiornamento dati!",
+                    "typology": "Testing",
+                    "description": "Test 1",
+                })
+                .expect('Content-Type', /json/)
+                .expect(200, { status: 200, message: "Invoice updated!" });
+        })
+    })
 })
