@@ -1,4 +1,3 @@
-const invoice = require('../schemas/invoice');
 const { Invoice } = require('../schemas/invoice');
 
 /**

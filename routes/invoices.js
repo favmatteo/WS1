@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const invoice = require('../databases/DBinvoice');
+const user = require('../databases/DBuser');
+
 const { ajv } = require('../lib/middleware/ajv');
-const { authenticate, validateSchema } = require('../lib/utility');
+const { authenticate, validateSchema, checkPermission, actions } = require('../lib/utility');
 
 const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validations/invoice');
 
@@ -25,6 +27,7 @@ router.post('/create', async (req, res, next) => {
     try {
         validateSchema(validate, data)
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.CREATE)
 
         const newInvoice = await invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer, data.id_invoice);
         res.status(newInvoice.status);
@@ -42,6 +45,7 @@ router.post('/create', async (req, res, next) => {
 router.get('/all', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.READ)
 
         const allInvoices = await invoice.getInvoice();
         res.status(allInvoices.status);
@@ -60,6 +64,7 @@ router.get('/all', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.READ)
 
         const specificInvoice = await invoice.getInvoice(req.params.id);
         res.status(specificInvoice.status);
@@ -78,6 +83,7 @@ router.get('/:id', async (req, res, next) => {
 router.delete('/delete/:id', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.DELETE)
 
         const result = await invoice.deleteInvoice(req.params.id);
         res.status(result.status);
@@ -99,6 +105,7 @@ router.put('/update/:id', async (req, res, next) => {
     try {
         validateSchema(validate, data)
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.UPDATE)
 
         const result = await invoice.updateInvoice(req.params.id, data);
         res.status(result.status);

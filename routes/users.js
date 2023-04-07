@@ -4,7 +4,7 @@ const router = express.Router();
 const user = require('../databases/DBuser');
 const { ajv } = require('../lib/middleware/ajv');
 
-const { authenticate, validateSchema } = require('../lib/utility');
+const { authenticate, validateSchema, checkPermission, actions } = require('../lib/utility');
 
 
 const { schemaCreateUser: schema } = require('../schemas/validations/user');
@@ -26,6 +26,7 @@ router.post('/create', async (req, res, next) => {
     try {
         validateSchema(validate, data)
         await authenticate(req.headers.authorization)
+        await checkPermission(req.headers.authorization, actions.CREATE)
 
         const newUser = await user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role);
         res.status(newUser.status);
@@ -40,12 +41,15 @@ router.post('/create', async (req, res, next) => {
 router.get('/all', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization);
+        await checkPermission(req.headers.authorization, actions.READ)
 
-        const specificUser = await user.getUser();
+
+        const specificUser = await user.getUserById();
         res.status(specificUser.status);
         res.send(specificUser);
 
     } catch (error) {
+        console.log(error);
         res.status(error.status ? error.status : 500);
         res.send(error);
     }
@@ -54,8 +58,9 @@ router.get('/all', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         await authenticate(req.headers.authorization);
+        await checkPermission(req.headers.authorization, actions.READ)
 
-        const specificUser = await user.getUser(req.params.id);
+        const specificUser = await user.getUserById(req.params.id);
         res.status(specificUser.status);
         res.send(specificUser);
 

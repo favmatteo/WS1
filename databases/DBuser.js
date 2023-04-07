@@ -1,4 +1,7 @@
+const { Role } = require('../schemas/role');
 const { User } = require('../schemas/user');
+const { Permission } = require('../schemas/permission');
+
 
 /**
  * Function that creates a user and save him/her in the database
@@ -31,7 +34,7 @@ async function createUser(id_user, name, surname, email, photo, id_role) {
  * @param {string} id - The id of the user 
  * @returns {JSON} - All users or a specific user
  */
-async function getUser(id = 'all') {
+async function getUserById(id = 'all') {
     try {
         const result = await User.findAll({
             attributes: ['id_user', 'name', 'surname', 'email', 'photo', 'id_role'],
@@ -46,7 +49,44 @@ async function getUser(id = 'all') {
     }
 }
 
+/**
+ * Function to get all users or a specific user from the database
+ * @param {string} email - The email of the user
+ * @returns {JSON} - A specific user
+ */
+async function getUserByEmail(user_email) {
+    try {
+        const result = await User.findAll({
+            attributes: ['id_user', 'name', 'surname', 'email', 'photo', 'id_role'],
+            where: email = user_email
+        })
+        if (result.length === 0) {
+            return { status: 404, message: "No user found!" }
+        }
+        return { status: 200, message: `User with email ${user_email}`, result: result }
+    } catch (error) {
+        return { status: 404, message: "Error while getting user!", why: error.message }
+    }
+}
+
+async function getUserPermission(email) {
+    const result = await User.findAll({
+        attributes: ['email'],
+        include: [{
+            model: Role,
+            include: [{
+                model: Permission,
+                attributes: ['pcreate', 'pread', 'pupdate', 'pdelete']
+            }]
+        }],
+        where: { email: email }
+    })
+    return result;
+}
+
 module.exports = {
     createUser: createUser,
-    getUser: getUser,
+    getUserById: getUserById,
+    getUserByEmail: getUserByEmail,
+    getUserPermission: getUserPermission,
 }

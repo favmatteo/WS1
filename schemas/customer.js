@@ -1,47 +1,47 @@
 const { sequelize, Sequelize } = require('../lib/database');
 
-const Invoice = sequelize.define('invoice', {
-    id_invoice: {
+const Customer = sequelize.define('customer', {
+    id_customer: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    date: {
-        type: Sequelize.DATE,
+    email: {
+        type: Sequelize.STRING,
         allowNull: false
     },
-    amount: {
+    first_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    surname: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    gender: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    telephone: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    address: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    age: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    title: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    typology: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    description: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    id_user: {
-        type: Sequelize.STRING,
-        foreignKey: true,
-        allowNull: false
-    },
-    id_customer: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false
-    }
 }, {
     timestamps: false,
-    tableName: 'invoice',
+    tableName: 'customer',
 });
 
+
+
 module.exports = {
-    Invoice: Invoice,
+    Customer: Customer,
 }

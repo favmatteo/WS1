@@ -25,6 +25,7 @@ const User = sequelize.define('user', {
     id_role: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        foreignKey: true,
     }
 }, {
     timestamps: false,
