@@ -28,7 +28,7 @@ describe("Invoices API", () => {
                     "id_customer": 1
                 })
                 .expect('Content-Type', /json/)
-                .expect(201);
+                .expect(201, { status: 201, message: "Invoice created!" });
         });
     });
 
@@ -58,7 +58,7 @@ describe("Invoices API", () => {
                 .get("/invoice/0")
                 .auth(process.env.TEST_USER_EMAIL, process.env.TEST_USER_PASSWORD)
                 .expect('Content-Type', /json/)
-                .expect(404);
+                .expect(404, { status: 404, message: "No invoice found!" });
         });
     });
 
