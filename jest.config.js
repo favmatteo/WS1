@@ -5,7 +5,7 @@ module.exports = {
             pageTitle: "Test Report",
             outputPath: "./tests/report.html",
         }],
-        ['jest-slow-test-reporter', { warnOnSlowerThan: 300, color: true }]
+        ['jest-slow-test-reporter', { warnOnSlowerThan: 1000, color: true }]
     ],
     testEnvironment: "node",
 };

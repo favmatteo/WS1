@@ -71,6 +71,8 @@ async function getUserByEmail(user_email) {
 
 async function getUserPermission(email) {
     const result = await User.findAll({
+        raw: true,
+        nest: true,
         attributes: ['email'],
         include: [{
             model: Role,
@@ -79,7 +81,7 @@ async function getUserPermission(email) {
                 attributes: ['pcreate', 'pread', 'pupdate', 'pdelete']
             }]
         }],
-        where: { email: email }
+        where: { email: email },
     })
     return result;
 }
