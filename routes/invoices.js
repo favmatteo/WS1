@@ -21,39 +21,48 @@ const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validat
  * @returns {JSON} - The status of invoice created
  */
 router.post('/create', async (req, res, next) => {
-    const data = req.body;
-    const validate = ajv.compile(schemaCreateInvoice);
+  const data = req.body;
+  const validate = ajv.compile(schemaCreateInvoice);
 
-    try {
-        validateSchema(validate, data)
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.CREATE)
+  try {
+    validateSchema(validate, data);
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.CREATE);
 
-        const newInvoice = await invoice.createInvoice(data.date, data.amount, data.title, data.typology, data.description, data.id_user, data.id_customer, data.id_invoice);
-        res.status(newInvoice.status);
-        res.send(newInvoice);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
-})
+    const newInvoice = await invoice.createInvoice(
+      data.date,
+      data.amount,
+      data.title,
+      data.typology,
+      data.description,
+      data.id_user,
+      data.id_customer,
+      data.id_invoice
+    );
+    res.status(newInvoice.status);
+    res.send(newInvoice);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
+});
 
 /**
  * Router for get all invoices
  * @returns {JSON} - All invoices
  */
 router.get('/all', async (req, res, next) => {
-    try {
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.READ)
+  try {
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.READ);
 
-        const allInvoices = await invoice.getInvoice();
-        res.status(allInvoices.status);
-        res.send(allInvoices);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const allInvoices = await invoice.getInvoice();
+    res.status(allInvoices.status);
+    res.send(allInvoices);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 /**
@@ -62,17 +71,17 @@ router.get('/all', async (req, res, next) => {
  * @returns {JSON} - The invoice
  */
 router.get('/:id', async (req, res, next) => {
-    try {
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.READ)
+  try {
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.READ);
 
-        const specificInvoice = await invoice.getInvoice(req.params.id);
-        res.status(specificInvoice.status);
-        res.send(specificInvoice);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const specificInvoice = await invoice.getInvoice(req.params.id);
+    res.status(specificInvoice.status);
+    res.send(specificInvoice);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 /**
@@ -81,39 +90,39 @@ router.get('/:id', async (req, res, next) => {
  * @returns {JSON} - The status of invoice deleted
  */
 router.delete('/delete/:id', async (req, res, next) => {
-    try {
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.DELETE)
+  try {
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.DELETE);
 
-        const result = await invoice.deleteInvoice(req.params.id);
-        res.status(result.status);
-        res.send(result);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const result = await invoice.deleteInvoice(req.params.id);
+    res.status(result.status);
+    res.send(result);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 /**
  * Router for update a specific invoice
-  * @param {integer} id - The id of the invoice
-  * @returns {JSON} - The status of invoice updated
+ * @param {integer} id - The id of the invoice
+ * @returns {JSON} - The status of invoice updated
  */
 router.put('/update/:id', async (req, res, next) => {
-    const data = req.body;
-    const validate = ajv.compile(schemaUpdateInvoice);
-    try {
-        validateSchema(validate, data)
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.UPDATE)
+  const data = req.body;
+  const validate = ajv.compile(schemaUpdateInvoice);
+  try {
+    validateSchema(validate, data);
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.UPDATE);
 
-        const result = await invoice.updateInvoice(req.params.id, data);
-        res.status(result.status);
-        res.send(result);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const result = await invoice.updateInvoice(req.params.id, data);
+    res.status(result.status);
+    res.send(result);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 module.exports = router;

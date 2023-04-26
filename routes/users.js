@@ -6,10 +6,8 @@ const { ajv } = require('../lib/middleware/ajv');
 
 const { authenticate, validateSchema, checkPermission, actions } = require('../lib/utility');
 
-
 const { schemaCreateUser: schema } = require('../schemas/validations/user');
-const validate = ajv.compile(schema)
-
+const validate = ajv.compile(schema);
 
 /**
  * Router for create a new user
@@ -22,52 +20,48 @@ const validate = ajv.compile(schema)
  * @returns {object} - The status of user created
  */
 router.post('/create', async (req, res, next) => {
-    const data = req.body;
-    try {
-        validateSchema(validate, data)
-        await authenticate(req.headers.authorization)
-        await checkPermission(req.headers.authorization, actions.CREATE)
+  const data = req.body;
+  try {
+    validateSchema(validate, data);
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.CREATE);
 
-        const newUser = await user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role);
-        res.status(newUser.status);
-        res.send(newUser);
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
-})
-
+    const newUser = await user.createUser(data.id_user, data.name, data.surname, data.email, data.photo, data.id_role);
+    res.status(newUser.status);
+    res.send(newUser);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
+});
 
 router.get('/all', async (req, res, next) => {
-    try {
-        await authenticate(req.headers.authorization);
-        await checkPermission(req.headers.authorization, actions.READ)
+  try {
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.READ);
 
-
-        const specificUser = await user.getUserById();
-        res.status(specificUser.status);
-        res.send(specificUser);
-
-    } catch (error) {
-        console.log(error);
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const specificUser = await user.getUserById();
+    res.status(specificUser.status);
+    res.send(specificUser);
+  } catch (error) {
+    console.log(error);
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 router.get('/:id', async (req, res, next) => {
-    try {
-        await authenticate(req.headers.authorization);
-        await checkPermission(req.headers.authorization, actions.READ)
+  try {
+    await authenticate(req.headers.authorization);
+    await checkPermission(req.headers.authorization, actions.READ);
 
-        const specificUser = await user.getUserById(req.params.id);
-        res.status(specificUser.status);
-        res.send(specificUser);
-
-    } catch (error) {
-        res.status(error.status ? error.status : 500);
-        res.send(error);
-    }
+    const specificUser = await user.getUserById(req.params.id);
+    res.status(specificUser.status);
+    res.send(specificUser);
+  } catch (error) {
+    res.status(error.status ? error.status : 500);
+    res.send(error);
+  }
 });
 
 module.exports = router;
