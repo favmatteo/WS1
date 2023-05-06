@@ -20,6 +20,44 @@ const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validat
  * @param {integer} id_customer - The id of the customer of the invoice
  * @returns {JSON} - The status of invoice created
  */
+/**
+ * @swagger
+ * /invoice/create:
+ *   post:
+ *     description: Use to create a new invoice
+ *     parameters:
+ *       - in: body
+ *         name: invoice
+ *         description: The invoice to create.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             date:
+ *               type: string
+ *             amount:
+ *               type: number
+ *             title:
+ *               type: string
+ *             typology:
+ *               type: string
+ *             description:
+ *               type: string
+ *             id_user:
+ *               type: integer
+ *             id_customer:
+ *               type: integer
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ */
 router.post('/create', async (req, res, next) => {
   const data = req.body;
   const validate = ajv.compile(schemaCreateInvoice);
@@ -50,6 +88,23 @@ router.post('/create', async (req, res, next) => {
 /**
  * Router for get all invoices
  * @returns {JSON} - All invoices
+ */
+/**
+ * @swagger
+ * /invoice/all:
+ *   get:
+ *     description: Use to request all invoices
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
  */
 router.get('/all', async (req, res, next) => {
   try {

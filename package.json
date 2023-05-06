@@ -19,13 +19,16 @@
     "express": "^4.18.2",
     "firebase": "^9.19.0",
     "mysql2": "^3.2.0",
-    "sequelize": "^6.30.0"
+    "sequelize": "^6.30.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "jest": "^29.5.0",
     "jest-html-reporter": "^3.7.1",
     "jest-slow-test-reporter": "^1.0.0",
     "jsdoc": "^4.0.2",
+    "nodemon": "^2.0.22",
     "supertest": "^6.3.3"
   }
 }
