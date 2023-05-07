@@ -57,6 +57,8 @@ const { schemaCreateInvoice, schemaUpdateInvoice } = require('../schemas/validat
  *         description: Forbidden
  *       '500':
  *         description: Internal server error
+ *     tags:
+ *       - Invoice
  */
 router.post('/create', async (req, res, next) => {
   const data = req.body;
@@ -105,6 +107,8 @@ router.post('/create', async (req, res, next) => {
  *         description: Forbidden
  *       '500':
  *         description: Internal server error
+ *     tags:
+ *       - Invoice
  */
 router.get('/all', async (req, res, next) => {
   try {
@@ -125,6 +129,32 @@ router.get('/all', async (req, res, next) => {
  * @param {integer} id - The id of the invoice
  * @returns {JSON} - The invoice
  */
+/**
+ * @swagger
+ * /invoice/{id}:
+ *   get:
+ *     description: Use to request a specific invoice
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        description: The id of the invoice
+ *        required: true
+ *        schema:
+ *          type: integer
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ *     tags:
+ *       - Invoice
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     await authenticate(req.headers.authorization);
@@ -144,6 +174,32 @@ router.get('/:id', async (req, res, next) => {
  * @param {integer} id - The id of the invoice
  * @returns {JSON} - The status of invoice deleted
  */
+/**
+ * @swagger
+ * /invoice/delete/{id}:
+ *   delete:
+ *     description: Use to delete a specific invoice
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        description: The id of the invoice
+ *        required: true
+ *        schema:
+ *          type: integer
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ *     tags:
+ *       - Invoice
+ */
 router.delete('/delete/:id', async (req, res, next) => {
   try {
     await authenticate(req.headers.authorization);
@@ -162,6 +218,52 @@ router.delete('/delete/:id', async (req, res, next) => {
  * Router for update a specific invoice
  * @param {integer} id - The id of the invoice
  * @returns {JSON} - The status of invoice updated
+ */
+/**
+ * @swagger
+ * /invoice/update/{id}:
+ *   put:
+ *     description: Use to delete a specific invoice
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        description: The id of the invoice
+ *        required: true
+ *        schema:
+ *          type: integer
+ *      - in: body
+ *        name: invoice
+ *        description: The invoice to create.
+ *        schema:
+ *          type: object
+ *          properties:
+ *            date:
+ *              type: string
+ *            amount:
+ *              type: number
+ *            title:
+ *              type: string
+ *            typology:
+ *              type: string
+ *            description:
+ *              type: string
+ *            id_user:
+ *              type: integer
+ *            id_customer:
+ *              type: integer
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ *     tags:
+ *       - Invoice
  */
 router.put('/update/:id', async (req, res, next) => {
   const data = req.body;

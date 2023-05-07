@@ -19,6 +19,46 @@ const validate = ajv.compile(schema);
  * @param {integer} id_role - The id of the role of the user
  * @returns {object} - The status of user created
  */
+/**
+ * @swagger
+ * /user/create:
+ *   post:
+ *     summary: Creates a new user.
+ *     description: Use this API to create a new user.
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: The user to create.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id_user:
+ *               type: string
+ *             name:
+ *               type: string
+ *             surname:
+ *               type: string
+ *             email:
+ *               type: string
+ *             photo:
+ *               type: string
+ *             id_role:
+ *               type: integer
+ *     responses:
+ *       '200':
+ *         description: The user was successfully created.
+ *       '400':
+ *         description: The request was invalid.
+ *       '401':
+ *         description: The request requires authentication.
+ *       '403':
+ *         description: The server understood the request, but is refusing to fulfill it.
+ *       '500':
+ *         description: An error occurred while processing the request.
+ *     tags:
+ *       - User
+ */
+
 router.post('/create', async (req, res, next) => {
   const data = req.body;
   try {
@@ -35,6 +75,25 @@ router.post('/create', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/all:
+ *   get:
+ *     description: Use to request all users
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ *     tags:
+ *       - User
+ */
 router.get('/all', async (req, res, next) => {
   try {
     await authenticate(req.headers.authorization);
@@ -50,6 +109,32 @@ router.get('/all', async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/{id}:
+ *   get:
+ *     description: Use to request a specific user
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        description: The id of the user
+ *        required: true
+ *        schema:
+ *          type: string
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ *       '400':
+ *         description: Bad request
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: Forbidden
+ *       '500':
+ *         description: Internal server error
+ *     tags:
+ *       - User
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     await authenticate(req.headers.authorization);
